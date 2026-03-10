@@ -1,28 +1,65 @@
-/**
- * Book My Stay - Hotel Booking Management System
- *
- * This class represents the entry point of the Hotel Booking application.
- * It prints a welcome message when the program starts.
- *
- * @author YourName
- * @version 1.0
- */
+import java.util.LinkedList;
+import java.util.Queue;
 
-public class UseCase1HotelBookingApp {
+class Reservation {
 
-    /**
-     * Main method - Entry point of the application
-     * JVM starts execution from here.
-     */
+    private String guestName;
+    private String roomType;
+
+    public Reservation(String guestName, String roomType) {
+        this.guestName = guestName;
+        this.roomType = roomType;
+    }
+
+    public String getGuestName() {
+        return guestName;
+    }
+
+    public String getRoomType() {
+        return roomType;
+    }
+
+    public void displayReservation() {
+        System.out.println("Guest: " + guestName + " | Room Type: " + roomType);
+    }
+}
+
+class BookingRequestQueue {
+
+    private Queue<Reservation> requestQueue;
+
+    public BookingRequestQueue() {
+        requestQueue = new LinkedList<>();
+    }
+
+    public void addRequest(Reservation reservation) {
+        requestQueue.add(reservation);
+        System.out.println("Booking request added for " + reservation.getGuestName());
+    }
+
+    public void displayQueue() {
+        System.out.println("\n=== BOOKING REQUEST QUEUE ===");
+
+        for (Reservation r : requestQueue) {
+            r.displayReservation();
+        }
+    }
+}
+
+public class UseCase5BookingRequestQueue {
+
     public static void main(String[] args) {
 
-        // Printing welcome message
-        System.out.println("=================================");
-        System.out.println(" Welcome to Book My Stay App ");
-        System.out.println(" Hotel Booking Management System ");
-        System.out.println(" Version: 1.0 ");
-        System.out.println("=================================");
+        BookingRequestQueue bookingQueue = new BookingRequestQueue();
 
-        System.out.println("Application started successfully.");
+        Reservation r1 = new Reservation("Arjun", "Single Room");
+        Reservation r2 = new Reservation("Priya", "Double Room");
+        Reservation r3 = new Reservation("Rahul", "Suite Room");
+
+        bookingQueue.addRequest(r1);
+        bookingQueue.addRequest(r2);
+        bookingQueue.addRequest(r3);
+
+        bookingQueue.displayQueue();
     }
 }
