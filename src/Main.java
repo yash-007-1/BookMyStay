@@ -1,28 +1,119 @@
-/**
- * Book My Stay - Hotel Booking Management System
- *
- * This class represents the entry point of the Hotel Booking application.
- * It prints a welcome message when the program starts.
- *
- * @author YourName
- * @version 1.0
- */
+import java.util.HashMap;
 
-public class UseCase1HotelBookingApp {
+abstract class Room {
 
-    /**
-     * Main method - Entry point of the application
-     * JVM starts execution from here.
-     */
+    protected String roomType;
+    protected double price;
+
+    public Room(String roomType, double price) {
+        this.roomType = roomType;
+        this.price = price;
+    }
+
+    public String getRoomType() {
+        return roomType;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public abstract void displayDetails();
+}
+
+class SingleRoom extends Room {
+
+    public SingleRoom() {
+        super("Single Room", 1500);
+    }
+
+    public void displayDetails() {
+        System.out.println("Room Type: " + roomType);
+        System.out.println("Beds: 1");
+        System.out.println("Price: ₹" + price);
+    }
+}
+
+class DoubleRoom extends Room {
+
+    public DoubleRoom() {
+        super("Double Room", 2500);
+    }
+
+    public void displayDetails() {
+        System.out.println("Room Type: " + roomType);
+        System.out.println("Beds: 2");
+        System.out.println("Price: ₹" + price);
+    }
+}
+
+class SuiteRoom extends Room {
+
+    public SuiteRoom() {
+        super("Suite Room", 5000);
+    }
+
+    public void displayDetails() {
+        System.out.println("Room Type: " + roomType);
+        System.out.println("Beds: 3");
+        System.out.println("Price: ₹" + price);
+    }
+}
+
+class RoomInventory {
+
+    private HashMap<String, Integer> inventory;
+
+    public RoomInventory() {
+        inventory = new HashMap<>();
+        inventory.put("Single Room", 5);
+        inventory.put("Double Room", 3);
+        inventory.put("Suite Room", 0);
+    }
+
+    public int getAvailability(String roomType) {
+        return inventory.getOrDefault(roomType, 0);
+    }
+}
+
+class RoomSearchService {
+
+    private RoomInventory inventory;
+
+    public RoomSearchService(RoomInventory inventory) {
+        this.inventory = inventory;
+    }
+
+    public void searchAvailableRooms() {
+
+        Room[] rooms = {
+                new SingleRoom(),
+                new DoubleRoom(),
+                new SuiteRoom()
+        };
+
+        System.out.println("=== AVAILABLE ROOMS ===\n");
+
+        for (Room room : rooms) {
+
+            int availability = inventory.getAvailability(room.getRoomType());
+
+            if (availability > 0) {
+                room.displayDetails();
+                System.out.println("Available: " + availability);
+                System.out.println();
+            }
+        }
+    }
+}
+
+public class UseCase4RoomSearch {
+
     public static void main(String[] args) {
 
-        // Printing welcome message
-        System.out.println("=================================");
-        System.out.println(" Welcome to Book My Stay App ");
-        System.out.println(" Hotel Booking Management System ");
-        System.out.println(" Version: 1.0 ");
-        System.out.println("=================================");
+        RoomInventory inventory = new RoomInventory();
+        RoomSearchService searchService = new RoomSearchService(inventory);
 
-        System.out.println("Application started successfully.");
+        searchService.searchAvailableRooms();
     }
 }
